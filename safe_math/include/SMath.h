@@ -1,86 +1,42 @@
 #pragma once
 
-#include <concepts>
-#include <expected>
-#include <string>
-
-// matches when A and B will produce a float / value promoted to float
-template <typename A, typename B>
-concept promotes_to_float = std::floating_point<A> or
-			    std::floating_point<B>;
-
-// constrains the inputs to promotes_to_float further by catching non-numeric types with operator+
-template <typename T>
-concept numeric = std::integral<T> or std::floating_point<T>;
+#include "SResult.h"
 
 // addition
 
-auto safe_add(std::integral auto a, std::integral auto b) -> std::expected<decltype(a + b), std::string> {
-    decltype(a + b) res{};
-    if (__builtin_add_overflow(a, b, &res)) {
-	return std::unexpected{ "Error: Integer Overflow, cannot store result of a + b in a variable of type decltype(a + b)" };
-    } else {
-	return res;
-    }
-}
- 
-auto float_add(numeric auto a, numeric auto b) -> decltype(a + b)
-requires promotes_to_float<decltype(a), decltype(b)> {
-    return a + b;
-}
- 
-auto add(numeric auto a, numeric auto b) -> std::expected<decltype(a + b), std::string> {
-    if constexpr (promotes_to_float<decltype(a), decltype(b)>) {
-	return float_add(a, b);
-    } else {
-	return safe_add(a, b);
-    }
-}
+auto safe_add(int a, int b) -> IntResult;
+
+auto float_add(double a, double b) -> double;
+auto float_add(int a, double b) -> double;
+auto float_add(double a, int b) -> double;
+
+auto add(int a, int b) -> IntResult;
+auto add(double a, double b) -> DoubleResult;
+auto add(int a, double b) -> DoubleResult;
+auto add(double a, int b) -> DoubleResult;
 
 // subtraction
 
-auto safe_sub(std::integral auto a, std::integral auto b) -> std::expected<decltype(a - b), std::string> {
-    decltype(a - b) res{};
-    if (__builtin_sub_overflow(a, b, &res)) {
-	return std::unexpected{ "Error: Integer Overflow, cannot store result of a - b in a variable of type decltype(a - b)" };
-    } else {
-	return res;
-    }
-}
- 
-auto float_sub(numeric auto a, numeric auto b) -> decltype(a - b)
-requires promotes_to_float<decltype(a), decltype(b)> {
-    return a - b;
-}
- 
-auto sub(numeric auto a, numeric auto b) -> std::expected<decltype(a - b), std::string> {
-    if constexpr (promotes_to_float<decltype(a), decltype(b)>) {
-	return float_sub(a, b);
-    } else {
-	return safe_sub(a, b);
-    }
-}
+auto safe_sub(int a, int b) -> IntResult;
 
-// multiplicatoin
+auto float_sub(double a, double b) -> double;
+auto float_sub(int a, double b) -> double;
+auto float_sub(double a, int b) -> double;
 
-auto safe_mul(std::integral auto a, std::integral auto b) -> std::expected<decltype(a * b), std::string> {
-    decltype(a * b) res{};
-    if (__builtin_mul_overflow(a, b, &res)) {
-	return std::unexpected{ "Error: Integer Overflow, cannot store result of a * b in a variable of type decltype(a * b)" };
-    } else {
-	return res;
-    }
-}
+auto sub(int a, int b) -> IntResult;
+auto sub(double a, double b) -> DoubleResult;
+auto sub(int a, double b) -> DoubleResult;
+auto sub(double a, int b) -> DoubleResult;
 
-auto float_mul(numeric auto a, numeric auto b) -> decltype(a * b)
-requires promotes_to_float<decltype(a), decltype(b)> {
-    return a * b;
-}
+// multiplication
 
-auto mul(numeric auto a, numeric auto b) -> std::expected<decltype(a * b), std::string> {
-    if constexpr (promotes_to_float<decltype(a), decltype(b)>) {
-	return float_mul(a, b);
-    } else {
-	return safe_mul(a, b);
-    }
-}
+auto safe_mul(int a, int b) -> IntResult;
+
+auto float_mul(double a, double b) -> double;
+auto float_mul(int a, double b) -> double;
+auto float_mul(double a, int b) -> double;
+
+auto mul(int a, int b) -> IntResult;
+auto mul(double a, double b) -> DoubleResult;
+auto mul(int a, double b) -> DoubleResult;
+auto mul(double a, int b) -> DoubleResult;

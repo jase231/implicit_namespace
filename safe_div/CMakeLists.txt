@@ -3,12 +3,12 @@ project(safe_math LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
-add_library(SMath SHARED
-	${CMAKE_CURRENT_SOURCE_DIR}/src/SMath.cpp)
-set_target_properties(SMath PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/SMath.h)
-target_include_directories(SMath PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(SDiv SHARED
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SDiv.cpp)
+set_target_properties(SDiv PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/SDiv.h)
+target_include_directories(SDiv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-install(TARGETS SMath
+install(TARGETS SDiv
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	)

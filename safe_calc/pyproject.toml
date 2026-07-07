@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "arith-calc"
 version = "0.1.0"
-dependencies = [ "safe-math" ]
+dependencies = [ "safe-math", "cppyy" ]
 
 [project.scripts]
 arith_calc = "arith.safe_calc:main"
