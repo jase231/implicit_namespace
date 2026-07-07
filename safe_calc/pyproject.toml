@@ -1,0 +1,14 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "arith-calc"
+version = "0.1.0"
+dependencies = [ "safe-math" ]
+
+[project.scripts]
+arith_calc = "arith.safe_calc:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["arith"]
