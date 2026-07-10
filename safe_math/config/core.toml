@@ -3,7 +3,7 @@ requires = ["scikit-build-core"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "safe_div"
+name = "safe_math"
 version = "0.0.1"
 authors = [
   { name = "Jake Serwe" },
@@ -12,3 +12,4 @@ requires-python = ">=3.10"
 
 [tool.scikit-build]
 wheel.install-dir = "arith"
+install.components = ["core"]

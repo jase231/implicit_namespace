@@ -3,12 +3,14 @@ requires = ["scikit-build-core"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "safe_math"
+name = "safe_exp"
 version = "0.0.1"
 authors = [
   { name = "Jake Serwe" },
 ]
 requires-python = ">=3.10"
+dependencies = ["safe_math"]
 
 [tool.scikit-build]
 wheel.install-dir = "arith"
+install.components = ["exp"]

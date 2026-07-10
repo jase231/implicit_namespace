@@ -4,8 +4,6 @@ import cppyy
 
 import arith
 
-have_div = False
-
 def _load(lib_name, header_list):
     for root in map(Path, arith.__path__):
         lib = root / "lib" / f"lib{lib_name}.so"
@@ -21,20 +19,20 @@ def _load(lib_name, header_list):
             return cppyy.gbl
     raise ImportError(f"{lib_name} is not installed in arith namespace")
 
-have_div = False
+have_exp = False
 
 sm = _load("SMath", ["SMath.h", "SResult.h"])
 try:
-    sd = _load("SDiv", ["SDiv.h"])
+    se = _load("SExp", ["SExp.h"])
 except ImportError:
-    sd = None
-    print("Warning: couldn't load SDiv, proceeding with + - * only")
+    se = None
+    print("Warning: couldn't load SExp, proceeding with + - * only")
 else:
-    have_div = True
+    have_exp = True
 
 ops = {"+": sm.add, "-": sm.sub, "*": sm.mul}
-if have_div:
-    ops["/"] = sd.divide
+if have_exp:
+    ops["^"] = se.expo
 
 
 # prefer treating vals as int so we can observe overflow error
@@ -70,14 +68,18 @@ def main():
             continue
 
         op, val = parts
-        if op == "/" and not have_div:
-            print("Error: SDiv not installed, cannot perform division operation")
+        if op == "^" and not have_exp:
+            print("Error: SExp not installed, cannot perform exponentiation operation")
             continue
         try:
             if op == "=":
                 acc = parse(val)
             else:
-                acc = unwrap(ops[op](acc, parse(val)))
+                num = parse(val)
+                if op == "^" and not isinstance(num, int):
+                    print("Error: exponent must be an integer")
+                    continue
+                acc = unwrap(ops[op](acc, num))
             print(acc)
         except (ValueError, KeyError) as e:
             print(f"Error: {e}")
